@@ -117,7 +117,7 @@ public class TestOneGUI extends JFrame {
         row5.addComponent(spacingLine);
         
         row6 = layout.createSequentialGroup();
-        row6.addComponent(cancelButton);
+//        row6.addComponent(cancelButton);
         row6.addComponent(startButton);
         row6.addComponent(nextTestButton);
         
@@ -151,7 +151,7 @@ public class TestOneGUI extends JFrame {
         vert5.addComponent(spacingLine);
         
         vert6 = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
-        vert6.addComponent(cancelButton);
+//        vert6.addComponent(cancelButton);
         vert6.addComponent(startButton);
         vert6.addComponent(nextTestButton);
 
