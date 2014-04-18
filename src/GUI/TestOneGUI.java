@@ -11,7 +11,10 @@ import javax.swing.GroupLayout.Group;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import Logic.TestOneLogic;
 
 
 public class TestOneGUI extends JFrame {
@@ -27,6 +30,8 @@ public class TestOneGUI extends JFrame {
     public final JLabel testNum;
     public final JLabel compareLine;
     public final JLabel showingLine;
+    public final JTextField secondsBox;
+    public final JLabel secondsWord;
     
     private final Group horizontal;
     private final Group vertical;
@@ -72,9 +77,13 @@ public class TestOneGUI extends JFrame {
         testNum = new JLabel();
         testNum.setText("Test 1");
         compareLine = new JLabel();
-        compareLine.setText("Compare Condition A and Condition B for 0:30 seconds.");
+        compareLine.setText("Compare Condition A and Condition B for ");
         showingLine = new JLabel();
         showingLine.setText("About to show: Condition A");
+        secondsBox = new JTextField();
+        secondsBox.setText("30");
+        secondsWord = new JLabel();
+        secondsWord.setText(" seconds.");
         
         //add spacing in GUI just so buttons aren't so clumped together
         showingLine.setBorder(new EmptyBorder(0, 0, 20, 0));
@@ -94,6 +103,8 @@ public class TestOneGUI extends JFrame {
         
         row2 = layout.createSequentialGroup();
         row2.addComponent(compareLine);
+        row2.addComponent(secondsBox);
+        row2.addComponent(secondsWord);
         
         row3 = layout.createSequentialGroup();
         row3.addComponent(showingLine);
@@ -126,6 +137,8 @@ public class TestOneGUI extends JFrame {
 
         vert2 = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
         vert2.addComponent(compareLine);
+        vert2.addComponent(secondsBox);
+        vert2.addComponent(secondsWord);
         
         vert3 = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
         vert3.addComponent(showingLine);
@@ -162,12 +175,26 @@ public class TestOneGUI extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //GET TIME
+                String timeDelayStr =secondsBox.getText();
+                int timeDelayInt = Integer.parseInt(timeDelayStr);
+                
                 cancelButton.setEnabled(true);
                 startButton.setEnabled(false);
                 nextTestButton.setEnabled(false);
+                conditionAButton.setEnabled(false);
+                conditionBButton.setEnabled(false);
+                secondsBox.setEditable(false);
                 
-                //GET TIME
                 //RUN START OF TEST 
+                boolean enableToggles;
+                try {
+                    enableToggles = TestOneLogic.startTest(timeDelayInt);
+                    afterTestEnableButtons(enableToggles);
+                } catch (InterruptedException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
         
@@ -175,6 +202,7 @@ public class TestOneGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //display condition A
+                TestOneLogic.displayConditionA();
             }
         });
         
@@ -182,6 +210,7 @@ public class TestOneGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //display condition B
+                TestOneLogic.displayConditionB();
             }
         });
         
@@ -193,11 +222,59 @@ public class TestOneGUI extends JFrame {
                 cancelButton.setEnabled(false);
                 startButton.setEnabled(true);
                 nextTestButton.setEnabled(true);
+                secondsBox.setEditable(true);
                 
                 //cancel current test
+                TestOneLogic.displayDarkRoom();
             }
         });
         
+        nextTestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                conditionAButton.setEnabled(false);
+                conditionBButton.setEnabled(false);
+                cancelButton.setEnabled(false);
+                startButton.setEnabled(true);
+                nextTestButton.setEnabled(true);
+                secondsBox.setEditable(true);
+                
+                //prepare for the next test
+                TestOneLogic.prepareNextTest();
+            }
+        });
+    }
+    
+    public void updateGUI(int testInt, int currentConditionNum, int conditionANum, int conditionBNum, int totalNumTests){
+        //update the text in the gui
+        testNum.setText("Test "+testInt+" out of "+totalNumTests);
+        conditionAButton.setText("Condition "+conditionANum);
+        conditionBButton.setText("Condition "+conditionBNum);
+        compareLine.setText("Compare Condition "+conditionANum+" and Condition "+conditionBNum);
+        showingLine.setText("About to show: Condition "+currentConditionNum);
+    }
+    
+    public void afterTestEnableButtons(boolean enableToggles){
+        cancelButton.setEnabled(false);
+        startButton.setEnabled(!enableToggles);
+        nextTestButton.setEnabled(true);
+        conditionAButton.setEnabled(enableToggles);
+        conditionBButton.setEnabled(enableToggles);
+        secondsBox.setEditable(true);
+        
+        if(enableToggles){
+            showingLine.setText("You have completed this test.");
+        }
+    }
+    
+    public void runningTest(int currentTestNum){
+        showingLine.setText("Currently running: Condition "+currentTestNum);
+        cancelButton.setEnabled(false);
+        startButton.setEnabled(false);
+        nextTestButton.setEnabled(false);
+        conditionAButton.setEnabled(false);
+        conditionBButton.setEnabled(false);
+        secondsBox.setEditable(false);
     }
     
 //    public static void main(final String[] args) {

@@ -5,13 +5,6 @@ import java.io.FileReader;
 
 import DataType.Document;
 
-/**
- * This is the object that handles most calculations and instant value storage.
- * It also is the one that calls commands on Documents.
- * 
- * @author marquez
- * 
- */
 public class Data {
 	private final Float[][] settingsInfo;
 	private final Integer[][] testComparisonsInfo;
@@ -23,6 +16,14 @@ public class Data {
 		this.settingsInfo = readSettings("settings");
 		this.testComparisonsInfo = readTestIDs("testID");
 	}
+	
+	public Float[][] getSettings(){
+	    return settingsInfo;
+	}
+	
+	public Integer[][] getTestComparisonsInfo(){
+        return testComparisonsInfo;
+    }
 	
     private Float[][] readSettings(String dataset) {
         try {
@@ -58,7 +59,7 @@ public class Data {
             Float[][] settings = new Float[numberOfSettings][7];
 
             // counter for the lines
-            int lineCounter = 0;
+            int lineCounter = 1;
 
             // splits and parses every line and adds it to the float array
             while (stringRead != null) {
@@ -68,7 +69,7 @@ public class Data {
                     String cellVal = rowData[i];
                     Float number = 0f;
                     
-                    int settingNum = lineCounter/2;
+                    int settingNum = (lineCounter+1)/2;
                     
                     if(Integer.parseInt(rowData[0])!=settingNum){
                         System.out.println("derp testNum: "+settingNum);
@@ -81,14 +82,14 @@ public class Data {
                     //where the RBG1's correspond to long lights, and RGB2's correspond to the sides 
                     
                     // if it is a number, parse it
-                    if (!cellVal.equals("NaN") && !cellVal.equals("DOWN90") &&!cellVal.equals("WALL10")) {
+                    if (!cellVal.equals("NaN") && !cellVal.equals("DOWN90") &&!cellVal.equals("WALL10") && !cellVal.equals("DOWN10") &&!cellVal.equals("WALL90")) {
                         number = Float.parseFloat(cellVal);
                     }
                     
                     //if we are looking at column C (in excel sheet, which is R value)
                     if(i==2){
                         //if i is odd, then long lights
-                        if(i%2==1){
+                        if(lineCounter%2==1){
                             settings[settingNum-1][1] = number;
                         }
                         //if i is even, then short lights
@@ -99,7 +100,7 @@ public class Data {
                     //column D, which is G
                     else if(i==3){
                         //if i is odd, then long lights
-                        if(i%2==1){
+                        if(lineCounter%2==1){
                             settings[settingNum-1][2] = number;
                         }
                         //if i is even, then short lights
@@ -111,7 +112,7 @@ public class Data {
                     //column E, which is B
                     else if(i==4){
                         //if i is odd, then long lights
-                        if(i%2==1){
+                        if(lineCounter%2==1){
                             settings[settingNum-1][3] = number;
                         }
                         //if i is even, then short lights
@@ -175,7 +176,7 @@ public class Data {
             Integer[][] testComparisons = new Integer[numberOfTests][3];
 
             // counter for the lines
-            int lineCounter = 0;
+            int lineCounter = 1;
 
             // splits and parses every line and adds it to the float array
             while (stringRead != null) {
