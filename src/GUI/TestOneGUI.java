@@ -5,14 +5,20 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 
 import Logic.TestOneLogic;
 
@@ -49,7 +55,18 @@ public class TestOneGUI extends JFrame {
     private final Group vert5;
     private final Group vert6;
     
+    private final String filepath;
+    
     public TestOneGUI(){
+    	// TODO: implement filepath
+    	// Gets Filepath
+    	this.filepath = fileChooser();
+    	
+    	// exits the program if null or if closed.
+    	if (this.filepath == null) {
+    		System.exit(0);
+    	}
+    	
         startButton = new JButton();
         startButton.setName("startButton");
         startButton.setText("Start");
@@ -286,4 +303,34 @@ public class TestOneGUI extends JFrame {
 //        });
 //    }
     
+    private static String fileChooser() {
+        // Creates the File Chooser
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new ExtensionFilter());
+        // Displays the chooser
+        int returnedInt = chooser.showOpenDialog(null);
+
+        // If a file is selected, return the string of the filepath
+        if (returnedInt == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+    
+    // Creates a filter for fileChooser that only shows .abc files
+    private static class ExtensionFilter extends FileFilter {
+
+        // This shows only .abc files
+        @Override
+        public boolean accept(File f) {
+            return f.getName().toLowerCase().endsWith(".csv") || f.isDirectory();
+        }
+
+        // This gives that filter a label
+        @Override
+        public String getDescription() {
+            return "Comma Separated Value file (*.csv)";
+        }
+        
+    }
 }
