@@ -9,15 +9,21 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
 
 import Logic.TestOneLogic;
 
@@ -64,6 +70,7 @@ public class TestOneGUI extends JFrame {
     private boolean timerRunning;
     
     public TestOneGUI(){
+    	
         startButton = new JButton();
         startButton.setName("startButton");
         startButton.setText("Start");
@@ -229,7 +236,6 @@ public class TestOneGUI extends JFrame {
                     enableToggles = TestOneLogic.startTest(timeDelayInt);
                     afterTestEnableButtons(enableToggles);
                 } catch (InterruptedException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }

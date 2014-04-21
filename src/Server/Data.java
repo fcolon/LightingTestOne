@@ -1,11 +1,15 @@
 package Server;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
-import DataType.Document;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 public class Data {
+    private final String filepath;
+    
 	private final Float[][] settingsInfo;
 	private final Integer[][] testComparisonsInfo;
 
@@ -14,7 +18,14 @@ public class Data {
 	 */
 	public Data() {
 		this.settingsInfo = readSettings("settings");
-		this.testComparisonsInfo = readTestIDs("testID");
+		
+	    // Gets Filepath
+	    this.filepath = fileChooser();
+	    // exits the program if null or if closed.
+	    if (this.filepath == null) {
+	        System.exit(0);
+	    }
+	    this.testComparisonsInfo = readTestIDs(this.filepath);
 	}
 	
 	public Float[][] getSettings(){
@@ -145,11 +156,11 @@ public class Data {
     //////////////////////////////////////////////////////////////////////////////
     
     
-    private Integer[][] readTestIDs(String dataset) {
+    private Integer[][] readTestIDs(String givenfilepath) {
         try {
             // count the number of tests
             int numberOfTests = 0;
-            FileReader fr2 = new FileReader("TestFiles/" + dataset + ".csv");
+            FileReader fr2 = new FileReader(givenfilepath);
             BufferedReader br2 = new BufferedReader(fr2);
             String counterRead = br2.readLine();
 
@@ -168,7 +179,7 @@ public class Data {
             //We're going to return an  array of integer arrays [[testNum,conditionA,conditionB],...]
 
             // initializations for parsing the lines
-            FileReader fr = new FileReader("TestFiles/" + dataset + ".csv");
+            FileReader fr = new FileReader(givenfilepath);
             BufferedReader br = new BufferedReader(fr);
             String stringRead = br.readLine();
 
@@ -200,7 +211,7 @@ public class Data {
                     
                     number = Integer.parseInt(cellVal);
                     
-                    //if we are looking at column B (in excel sheet, which corresponds to condition A)
+                    //if we are looking at column B in excel sheet, which corresponds to condition A
                     if(i==1){
                         testComparisons[testNum-1][1] = number;
                     }
@@ -237,5 +248,35 @@ public class Data {
         return newVal;
     }
     
+    private static String fileChooser() {
+        // Creates the File Chooser
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new ExtensionFilter());
+        // Displays the chooser
+        int returnedInt = chooser.showOpenDialog(null);
+
+        // If a file is selected, return the string of the filepath
+        if (returnedInt == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+    
+    // Creates a filter for fileChooser that only shows .abc files
+    private static class ExtensionFilter extends FileFilter {
+
+        // This shows only .abc files
+        @Override
+        public boolean accept(File f) {
+            return f.getName().toLowerCase().endsWith(".csv") || f.isDirectory();
+        }
+
+        // This gives that filter a label
+        @Override
+        public String getDescription() {
+            return "Comma Separated Value file (*.csv)";
+        }
+        
+    }
     
 }

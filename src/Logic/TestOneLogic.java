@@ -205,13 +205,11 @@ public class TestOneLogic {
 //        //if nextTestInt is conditionAInt, that means we're on test condition A
 //        if(nextTestInt == conditionAInt){
 //            displayConditionA();
-//            //TODO: time delay of some sort HERE
 //            nextTestInt = conditionBInt;
 //        }
 //        //else if it's conditionBInt, we're on test condition B
 //        else if(nextTestInt == conditionBInt){
 //            displayConditionB();
-//            //TODO: time delay of some sort HERE
 //            nextTestInt = -1;
 //            enableToggles = true;
 //        }

@@ -86,7 +86,6 @@ public class MessageListener implements OSCListener {
 //			}
 //
 //			// gets the light intensity
-//			//TODO: remove after testing
 //			// System.out.println("input: " + (Float) data[1] + " filtered: " + filteredY);
 //			Float intensity = this.database
 //					.lightIntensity(filteredX, filteredY);
@@ -96,7 +95,6 @@ public class MessageListener implements OSCListener {
 //				// sets the last value
 //				this.lastMessage = intensity;
 //
-//				// TODO: Remove after testing
 //				// System.out.println(intensity);
 //
 //				// sends the message to all 20 lights
@@ -223,8 +221,6 @@ public class MessageListener implements OSCListener {
 
     @Override
     public void acceptMessage(Date arg0, OSCMessage arg1) {
-        // TODO Auto-generated method stub
-        
         //shouldn't ever have to run this
         System.out.println("WHY YOU DO THIS?!");
         
