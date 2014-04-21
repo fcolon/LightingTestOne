@@ -40,6 +40,8 @@ public class MessageListener implements OSCListener {
 		this.database = new Data();
 		this.serverIp = InetAddress.getByName("lights.media.mit.edu");
 		this.serverPort = 10002;
+		
+		//bytes to whatever he's expecting
 
 		// TODO: SET TO ACTIVE WHEN FINISHED TESTING
 		sendMessage("/set_inactive", null);

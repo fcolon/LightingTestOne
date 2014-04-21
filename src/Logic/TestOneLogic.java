@@ -84,7 +84,7 @@ public class TestOneLogic {
         int conditionANum = comparisons[1];
         int conditionBNum = comparisons[2];
         
-        System.out.println("Test: "+currentTestNum+" A: "+conditionANum+" B: "+conditionBNum);
+//        System.out.println("Test: "+currentTestNum+" A: "+conditionANum+" B: "+conditionBNum);
         
         Float[] settingsA = settings[conditionANum-1];
         Float[] settingsB = settings[conditionBNum-1];
@@ -149,6 +149,9 @@ public class TestOneLogic {
                 downRB, downGB, downBB, //19
                 downRB, downGB, downBB }; //20
         
+//        System.out.println("Condition A Wall- R: "+wallRA+" G: "+wallGA+" B: "+wallBA);
+//        System.out.println("Condition B Down- R: "+downRB+" G: "+downGB+" B: "+downBB);
+        
         messageA = messageValuesA;
         messageB = messageValuesB;
 
@@ -186,29 +189,41 @@ public class TestOneLogic {
 //       }
        
        gui.runningTest(currentTestNum);
+       
+       //display Condition A for some given time
+       displayConditionA();
+       thisThread.sleep(timeDelayms);
+       
+       //display Condition B for same given time
+       displayConditionB();
+       thisThread.sleep(timeDelayms);
+       
+       //enable Toggles
+       enableToggles = true;
         
-        //if nextTestInt is conditionAInt, that means we're on test condition A
-        if(nextTestInt == conditionAInt){
-            displayConditionA();
-            //TODO: time delay of some sort HERE
-            nextTestInt = conditionBInt;
-        }
-        //else if it's conditionBInt, we're on test condition B
-        else if(nextTestInt == conditionBInt){
-            displayConditionB();
-            //TODO: time delay of some sort HERE
-            nextTestInt = -1;
-            enableToggles = true;
-        }
-        else{
-            //should not get here
-            System.out.println("Error in startTest()!!!!");
-        }
-        
-        thisThread.sleep(timeDelayms);
+       //If Matt decides he wants to be able to control each part of each test, uncomment this section.
+//        //if nextTestInt is conditionAInt, that means we're on test condition A
+//        if(nextTestInt == conditionAInt){
+//            displayConditionA();
+//            //TODO: time delay of some sort HERE
+//            nextTestInt = conditionBInt;
+//        }
+//        //else if it's conditionBInt, we're on test condition B
+//        else if(nextTestInt == conditionBInt){
+//            displayConditionB();
+//            //TODO: time delay of some sort HERE
+//            nextTestInt = -1;
+//            enableToggles = true;
+//        }
+//        else{
+//            //should not get here
+//            System.out.println("Error in startTest()!!!!");
+//        }
         
         //room currently goes to black after each condition test
         displayDarkRoom();
+        
+        nextTestInt = -1; // we are done testing each condition
         
         gui.updateGUI(currentTestNum, nextTestInt, conditionAInt, conditionBInt, totalNumTests);
 

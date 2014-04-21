@@ -84,6 +84,7 @@ public class Data {
                     // if it is a number, parse it
                     if (!cellVal.equals("NaN") && !cellVal.equals("DOWN90") &&!cellVal.equals("WALL10") && !cellVal.equals("DOWN10") &&!cellVal.equals("WALL90")) {
                         number = Float.parseFloat(cellVal);
+                        number = convertToScale(number);
                     }
                     
                     //if we are looking at column C (in excel sheet, which is R value)
@@ -225,6 +226,15 @@ public class Data {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    /**
+     * Scales values 0-255 to 0-1.
+     * @return
+     */
+    public float convertToScale(float oldVal){
+        float newVal = oldVal/255f;
+        return newVal;
     }
     
     
