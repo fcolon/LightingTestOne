@@ -2,8 +2,6 @@ package Logic;
 
 import java.net.UnknownHostException;
 
-import javax.swing.SwingUtilities;
-
 import GUI.TestOneGUI;
 import Server.MessageListener;
 

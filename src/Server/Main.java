@@ -3,12 +3,12 @@ package Server;
 
 import java.io.IOException;
 
-import com.illposed.osc.OSCPortIn;
-
 import javax.swing.SwingUtilities;
 
 import GUI.TestOneGUI;
 import Logic.TestOneLogic;
+
+import com.illposed.osc.OSCPortIn;
 
 public class Main {
     
@@ -20,7 +20,8 @@ public class Main {
         Float[][] settings = readData.getSettings();
         Integer[][] comparisons = readData.getTestComparisonsInfo();
         final TestOneGUI gui = new TestOneGUI();
-        TestOneLogic logic = new TestOneLogic(settings, comparisons, gui);
+        @SuppressWarnings("unused")
+		TestOneLogic logic = new TestOneLogic(settings, comparisons, gui);
         
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
